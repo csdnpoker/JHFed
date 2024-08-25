@@ -1,2 +1,2 @@
-# 代码在学校里面的机器上，需要回校补充
+Handling the Cannikin Law: Accelerating Federated Learning by Coordinating Pacesetters and Stragglers
 
