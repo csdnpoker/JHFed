@@ -2,9 +2,6 @@ import math
 from random import random
 import matplotlib.pyplot as plt
 
-
-
-# x为公式里的x1,y为公式里面的x2
 class SA:
     def __init__(self, func, maxa, maxb, T0=100, Tf=0.01, alpha=0.99):
         self.func = func
@@ -18,7 +15,7 @@ class SA:
         self.most_best = []
         self.history = {'f': [], 'T': []}
         self.lista = []
-    def generate_new(self, x, y):  # 扰动产生新解的过程
+    def generate_new(self, x, y): 
         while True:
             x_new = x + self.T * (random() - random())
             y_new = y + self.T * (random() - random())
@@ -26,7 +23,7 @@ class SA:
                 break
         return x_new, y_new
 
-    def Metrospolis(self, f, f_new):  # Metropolis准则
+    def Metrospolis(self, f, f_new):  
         if f_new <= f:
             return 1
         else:
@@ -69,7 +66,7 @@ class SA:
         self.lista.append(self.x[idx], self.y[idx])
         return self.lista
 
-def func(x, y):  # 函数优化问题
+def func(x, y): 
     res = -(x*x+y*y)
     return res
 
