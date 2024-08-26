@@ -4,10 +4,10 @@ import socket
 from pyspark improt SparkContext
 from datatime import Datatime
 from hdfs import Client
-from Node import Split, Global_Node
+from Split import Split, Global_Node
 from Args import args_parser
 from Data import Data
-from Trainer import Trainer
+from Train import Trainer
 import copy
 
 address = ("192.168.43.185",10000)#本主机IP
