@@ -3,11 +3,11 @@ import pickle
 import socket
 from pyspark improt SparkContext
 from hdfs import Client
-from Node import Split, Global_Node
+from Split import Split, Global_Node
 from Args import args_parser
 from Data import Data
 from utils import LR_scheduler, Summary
-from Trainer import Trainer
+from Train import Train
 import copy
 ipl=["192.168.43.83","192.168.43.68","192.168.43.138","192.168.43.232","192.168.43.150","192.168.43.48","192.168.43.164","192.168.43.208"]
 cohdfs = Client('http://192.168.43.185:50070',root='/user/firefly',timeout=1000, session=False)
