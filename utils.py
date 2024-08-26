@@ -1,10 +1,8 @@
 import torch
-import Node
+import Split
 import numpy as np
 # from torch.utils.tensorboard import SummaryWriter
 # writer = SummaryWriter()
-
-
 
 
 def LR_scheduler(rounds, Edge_nodes, args):
@@ -16,7 +14,6 @@ def LR_scheduler(rounds, Edge_nodes, args):
         Edge_nodes[i].optimizer.param_groups[0]['lr'] = args.lr
     
     print('Learning rate={:.4f}'.format(args.lr))
-
 
 def Summary(args):
     print("Summary：\n")

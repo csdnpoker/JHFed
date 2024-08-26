@@ -6,7 +6,6 @@ from torchvision.datasets import utils, MNIST, CIFAR10, CIFAR100
 from torchvision import transforms
 from torch.utils.data import Subset, DataLoader, random_split
 from PIL import Image
-# from noisify import noisify_label
 
 
 class FEMNIST(MNIST):

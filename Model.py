@@ -96,21 +96,6 @@ class LeNet5(nn.Module):
         return x
 
 
-class MLP(nn.Module):
-    def __init__(self):
-        super(MLP, self).__init__()
-        self.fc1 = nn.Linear(3 * 32 * 32, 200)
-        self.fc2 = nn.Linear(200, 200)
-        self.fc3 = nn.Linear(200, 10)
-
-    def forward(self, x):
-        x = x.view(-1, 3 * 32 * 32)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
-
-
 
 class CNN(nn.Module):
     def __init__(self):
