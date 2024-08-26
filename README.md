@@ -15,8 +15,8 @@ Dependencies
 
 Usage
 ----
-**Master:** python -master.py
+**Server:** python -master.py
 
-**Slave:** python -slave.py
+**Client:** python -slave.py
 
 
