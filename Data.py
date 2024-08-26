@@ -128,43 +128,34 @@ class Data(object):
         trainset, testset = Dataset(args)
         
         if args.sampler == 'iid':
-            # 分割train set分配给边缘节点
+            
             num_train = [int(len(trainset) / args.split) for _ in range(args.split)]
-            # cumsum_train = torch.tensor(list(num_train)).cumsum(dim=0).tolist()
-            # idx_train = range(len(trainset.targets))
-            # splited_trainset = [Subset(trainset, idx_train[off - l:off]) for off, l in zip(cumsum_train, num_train)]
             splited_trainset = random_split(trainset, num_train, generator=torch.Generator().manual_seed(42))
 
-            # 分割test set分配给边缘节点 
             num_test = [int(len(testset) / args.split) for _ in range(args.split)]
-            # cumsum_test = torch.tensor(list(num_test)).cumsum(dim=0).tolist()
-            # idx_test = range(len(testset.targets))
-            # splited_testset = [Subset(testset, idx_test[off - l:off]) for off, l in zip(cumsum_test, num_test)]
             splited_testset = random_split(testset, num_test, generator=torch.Generator().manual_seed(42))
             
         elif args.sampler == 'non-iid':
-            # 分割train set分配给边缘节点
+           
             targets = np.array(trainset.targets)
             num_train = [int(len(trainset) / args.split) for _ in range(args.split)]
             idx = [list(np.where(targets==1)[0]) for q in range(10)]
-            kk = [idx[j][:int(args.mu*len(idx[1]))]for j in range(args.node_num)]    # 得到前百分之mu的对应数据
-            num_data = list(range(len(trainset)))    # 数据集总数量
+            kk = [idx[j][:int(args.mu*len(idx[1]))]for j in range(args.node_num)]    
+            num_data = list(range(len(trainset)))    
             kk2 = [b for a in kk for b in a]
-            ll = list(set(num_data)-set(kk2))   # 将已经被选走的移除
-            shuffle(ll)                # 打乱
-            ii = [ll[int(o*num_train[o]*(1-args.mu)):int((o+1)*num_train[o]*(1-args.mu))] for o in range(args.split)]  # 随机将剩下的补齐
-            zz = [kk[p]+ii[p] for p in range(args.split)]   ##得到最终索引
+            ll = list(set(num_data)-set(kk2))   
+            shuffle(ll)                
+            ii = [ll[int(o*num_train[o]*(1-args.mu)):int((o+1)*num_train[o]*(1-args.mu))] for o in range(args.split)]  
+            zz = [kk[p]+ii[p] for p in range(args.split)]  
             
             splited_trainset = [Subset(trainset, zz[q]) for q in range(args.split)]
             
-            # 分割test set分配给边缘节点，没必要
+            
             num_test = [int(len(testset) / args.split) for _ in range(args.split)]
             splited_testset = random_split(testset, num_test, generator=torch.Generator().manual_seed(42))
 
-        #print(len(splited_testset))
+       
         self.test_all = DataLoader(testset, batch_size=args.batchsize, shuffle=True, num_workers=4)
         self.train_loader = [DataLoader(splited_trainset[i], batch_size=args.batchsize, shuffle=True, num_workers=4)
                              for i in range(args.node_num)]
-        #self.test_loader = [DataLoader(splited_testset[i], batch_size=args.batchsize, shuffle=True, num_workers=4)
-        #                     for i in range(args.node_num)]
         self.test_loader = DataLoader(testset, batch_size=args.batchsize, shuffle=True, num_workers=4)
