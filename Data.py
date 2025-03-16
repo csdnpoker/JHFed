@@ -118,7 +118,23 @@ def Dataset(args):
         
 
     return trainset, testset
+def non_iid_dirichlet_partition(dataset, num_clients, alpha=0.5):
+    labels = np.array(dataset.targets)
+    num_classes = len(np.unique(labels))
+    label_distribution = np.random.dirichlet([alpha] * num_clients, num_classes)
+    class_indices = [np.where(labels == i)[0] for i in range(num_classes)]
+    client_indices = [[] for _ in range(num_clients)]
+    for c, fracs in zip(class_indices, label_distribution):
+        for i, frac in enumerate(fracs):
+            num_examples = int(frac * len(c))
+            client_indices[i].extend(c[:num_examples])
+            c = c[num_examples:]
+    client_datasets = [Subset(dataset, indices) for indices in client_indices]
+    return client_datasets
 
+num_clients = 10
+alpha = 0.65  # 控制 non-IID 程度，越小越 non-IID
+client_datasets = non_iid_dirichlet_partition(trainset, num_clients, alpha)
 
 class Data(object):
 
